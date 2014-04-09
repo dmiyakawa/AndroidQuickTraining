@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    XML
+    Extensible Markup Language。HTMLのようなファイル形式のことです。「えっくすえむえる」と読む。
+    XMLという形式自体はAndroidやスマホとは関係なく一般的に使われる。
+    この部分は「コメント」と呼ばれる。HTMLと同じく、色々とメモを書くのに使える。
+
+    AndroidManifest.xml
+    アプリケーションそのものに関する情報を記述する。
+    .xmlはXML形式であることを意味した拡張子 (Wordで言う.docx とかと同じような感じ)。
+
+    Manifest
+    一般的には「積荷証明書」「声明書」といった意味。
+    例1: 選挙公約 election manifest
+    例2: 共産党宣言 Communist Manifesto
+    
+    大統領風の人が
+    「これからこのプログラムについての重要な情報を宣言する！」
+    と宣言している姿を想像しつつ読む。
+
+    AndroidManifest.xml含めて、XMLなどで書かれた設定ファイルはプログラムとは呼ばないが、
+    プログラムがどう動くかの重要な情報を持っていると言う意味では同格か、それ以上。
+
+    プロもそうでない人も、わからなくなったら公式のドキュメントを観るのが良い。
+    基本的には全て英語で公開される。
+    翻訳をしてくれたりする人もいるけど、間違ってたり、古い内容だったりするので、
+    出来れば英語の原典を当たろう。
+    ただし英語の原典が間違ってることもある。にんげんだもの
+    http://developer.android.com/intl/ja/guide/topics/manifest/manifest-intro.html
+ -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.training"
+    android:versionCode="1"
+    android:versionName="1.0" >
+    <!--
+      SDK
+      Software Development Kit ソフトウェア開発キット
+
+      「バージョン」によって動きが違うので、「最低限このSDKでお願いします」と
+      「出来ればこれでお願いします」が書かれている。
+ 
+      http://developer.android.com/intl/ja/guide/topics/manifest/uses-sdk-element.html
+     -->
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="19" />
+
+    <!--
+        どういうアプリケーションとして動いて欲しいかが書いてある。
+        例えば「アイコンはこの画像を使ってください」とか。 ("android:icon")
+        
+        "@drawable/ic_launcher" や "@string/app_name" は Android 上のローカルルールで、
+        「"ic_launcher"というdrawable (直訳すれば「描けるもの」。どろーわぶるとそのまま読む)を使え」
+        「"app_name"という文字列を使え」
+        って意味となる。
+
+        詳細を省くが、いろんなデバイスや言語 (日本語や英語やスロベニア語) に対応するには
+        ここに複雑な仕組みを導入する必要が出ている。This explanation should have been English, right?
+        http://developer.android.com/intl/ja/guide/topics/resources/drawable-resource.html
+        http://developer.android.com/intl/ja/guide/topics/resources/string-resource.html
+     -->
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <!--
+            ＊＊重要＊＊
+            このトレーニングでは以下の
+            "android:name"
+            に対応する要素を変更することでアプリの挙動が変わっていく様子をみる。
+
+            ここで使えるのは、このプロジェクトのsrc/の下にあるjavaファイル。
+            "jp"からドット(".")区切りでフォルダ名を並べていき、
+            ファイル名の".java"を除いたところまで入力する。
+            全て半角文字で、大文字小文字を区別する。
+
+            最初は、一日目の冒頭の画面を表示するため、以下のようになっている。
+            android:name="com.example.MainActivityDay1_0_Start"
+
+            例えば、二日目の冒頭の画面を見たければ、ここを
+            android:name="com.example.training.MainActivityDay2_0_Start"
+            にして、メニューの Run -> Run をクリックする。
+            アンダースコア "_" 等も忘れないこと。
+            (ちなみに普通はこんなファイル名にはしない。演習用に意図的に命名している)
+
+            エミュレータを起動しておくこと！
+            ＊＊重要＊＊
+
+            "android:name" は
+            「このアプリの起動時にどのActivity (アクティビティ) を動かすか」
+            を指定する。
+            http://developer.android.com/intl/ja/guide/topics/manifest/activity-element.html
+         -->
+        <activity
+            android:name="com.example.training.MainActivityDay1_0_Start"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
