@@ -10,8 +10,8 @@
 
 == 「マインスイーパ」とは
 
- * http://goo.gl/yBHU77 (マインスイーパ - Wikipedia)
- * http://minesweeperonline.com/#beginner
+ * @<href>{http://goo.gl/yBHU77} (マインスイーパ - Wikipedia)
+ * @<href>{http://minesweeperonline.com/#beginner}
  ** 画像を@<img>{minesweeper}に示す。
  * このゲームをAndroid上で動くように作ってみる。
 
@@ -98,7 +98,7 @@
 ==== 使用するツール類の概説（復習）
 
  * Eclipse
- ** http://ja.wikipedia.org/wiki/%E7%B5%B1%E5%90%88%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83
+ ** @<href>{http://goo.gl/qNvb3J} (統合開発環境 - Wikipedia)
  ** 統合開発環境: ソフトウェア開発に必要な複数のツールをまとめたソフトウェア
  *** エディタ: 何かを編集するためのソフト。メモ帳のお化けみたいなもの
  *** コンパイラ: ソースコードから実際のソフトウェアとして動作する実行コードを生成するもの
@@ -211,18 +211,30 @@
 
  * プログラムの中では意味が当然違う。
  ** 特に「全角」はエラーになる (エラーと警告の違いについては後述)
- * おまけ: http://ja.wikipedia.org/wiki/Whitespace
- ** http://compsoc.dur.ac.uk/whitespace/count.ws
+ * おまけ: @<href>{http://ja.wikipedia.org/wiki/Whitespace}
+ ** 真っ白なプログラム: @<href>{http://compsoc.dur.ac.uk/whitespace/count.ws}
 
-=== 脱線: プログラマは「0から始める」のがお好き
+=== 脱線: プログラマはインデックスを「0から始める」のがお好き
 
- * 慣習に若干近い……？
- ** 「複数のオリジンが混在する身近な例として、日時があげられる。年・月・日は1オリジンであるが、時・分・秒は0オリジンである。」
- ** http://ja.wikipedia.org/wiki/%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%B3
- * Androidアプリで使われるJava言語では 0-origin を用いる
+ * index .. 索引
+ * 配列の最初の要素をarray[0]（0-origin）とするか、array[1]（1-origin）とするか
+ ** 慣習に若干近い……
+
+実は実生活では無意識に両方混ぜて使っている。
+
+//quote{
+複数のオリジンが混在する身近な例として、日時があげられる。
+年・月・日は1オリジンであるが、時・分・秒は0オリジンである。
+（@<href>{http://goo.gl/NMhrsE} オリジン - Wikipedia）
+//}
+
+ * origin ... 起源、源泉、先祖、血統、家柄
+ ** origin of civilization で「文明の起源」
+ * Androidアプリで使われるJava言語では 0-origin。つまり0から始まる
  * 今回は全く関係ないがメモリアドレスに関わる計算をする際の名残？と考えると分かりやすい
  ** addr+0 は先頭 (今ではlst[1]が最初でも不整合は生じない)
- * ファイル名でも1-originと0-originが混ざってますね (day1, day2 に対して _0_)
+
+サンプルプロジェクトのファイル名でも、1-originと0-originが混ざってしまっている。
 
 == アプリに部品を配置する
 
@@ -278,16 +290,16 @@
  ** 今は「レイアウトエディタ」というものが便利です
  *** また出ました。エディタ
  *** エディタ: 何かを編集するためのソフト
- **** http://ja.wikipedia.org/wiki/%E3%82%A8%E3%83%87%E3%82%A3%E3%82%BF
+ **** @<href>{http://goo.gl/wzI058}（エディタ - Wikipedia）
 
-==== RelativeLayoutをLinearLayoutに置き換える
+=== RelativeLayoutをLinearLayoutに置き換える
 
  * 今回は@<code>{RelativeLayout}は使いません
  * @<code>{LinearLayout}にとりあえず変更します。
  ** 「横に並べる」「縦に並べる」だけであればこちらの方がはるかに楽なため
 
 
-==== ボタンを配置する
+=== ボタンを配置する
 
 （チェックポイント: MainActivityDay1_1_Show1Button.java）
 
@@ -296,7 +308,7 @@
  ** レイアウトエディタで遊んでみましょう
  * テキストを編集してみます。
 
-===== 開発Tips: 「エラー」と「警告」に注意
+==== 開発Tips: 「エラー」と「警告」に注意
 
  * (多分ミスるが、ミスっていなかったらここで@<code>{LinearLayout}のタイポなどをやってみる -> エラー)
  * (同様に、@<code>{@string/hello_world} を別の文字列に変えてしまう -> 警告)
@@ -312,12 +324,12 @@
  * 警告の例: strings.xml を使わない
  ** これは「エラー」とは違う
 
-==== ボタンを8つ並べる (MainActivityDay1_2_Show8Buttons.java)
+=== ボタンを8つ並べる (MainActivityDay1_2_Show8Buttons.java)
 
  * 8つ並べます
  * ええと……縦にも並べたい……
 
-==== マインスイーパ風にボタンを 8x8 に並べる (MainActivityDay1_3_Show88Buttons.java)
+=== マインスイーパ風にボタンを 8x8 に並べる (MainActivityDay1_3_Show88Buttons.java)
 
  * え、どうやってやるの
  * 一歩下がって「どうやって実現するか」を想像する -> 想像した方法がどう実現できるかを調べる
@@ -349,7 +361,7 @@
  **** 素早く作業するのであれば自動化に勝る高速化はない
  * 3分間クッキングよろしく、作っておきました……！
 
-===== ボタンについているidとは……?
+==== ボタンについているidとは……?
 
  * ボタン一個一個にIDを振ってあります
  * @<code>{@+id/buttonXY}と今回はしました
@@ -370,7 +382,9 @@
  ** なので、@<code>{Button} のならびは 00, 10, 20, 30 ... となっている
  ** ややこしいので注意
 
-==== 見た目をよりマインスイーパーっぽくする (mine_fragment_day1_4_better_88_buttons.xml)
+=== 見た目をよりマインスイーパーっぽくする
+
+（チェックポイント: mine_fragment_day1_4_better_88_buttons.xml）
 
  * ボタンの見た目がなんかアレですね
  * 「デフォルト」 (標準) のボタンの見栄えが今回のマインスイーパーに合ってないからです
@@ -379,11 +393,12 @@
  ** 9 patch とは？ pressed？ focused？ disabled？
  * プログラマーの日常
  ** わからない時には割とオンラインで聞いたりします
- ** http://qiita.com/amedama/items/fb94c9665a6f7a4e7676
- ** https://github.com/dmiyakawa/crop_9patch_space
+ * 今回は自分で用意した「隙間のないボタン用drawable」を使う
+ ** 参考1: @<href>{http://qiita.com/amedama/items/fb94c9665a6f7a4e7676}
+ ** 参考2: @<href>{https://github.com/dmiyakawa/crop_9patch_space}
 
-=== とりあえず「左上のボタン」を押した際に、何か仕事をさせる
-==== このままではボタンを押しても何も起こりません
+== ユーザがボタンを押したとき、アプリを反応させる
+=== このままではボタンを押しても何も起こりません
 
  * ボタンを押した時に、プログラムに「何かしてよ」と命令します。
  * どのボタンが何をするかを決める必要があります
@@ -391,7 +406,7 @@
  ** ID ... 同じ番号が割り振られていないことがとても重要 (当たり前だが)
  ** @<code>{@+id/button0} というのはそういうもの
 
-==== イベントとイベントリスナーとは
+=== イベントとイベントリスナーとは
 
  * 「何かが起きたとき」の何かをイベントと言う
  ** イベント
@@ -402,7 +417,7 @@
  *** 「勉強をやめてそっちを聞く」はイベントを「聞いて」自分がなにかする
  * 「ボタンを押したとき」もイベント (@<code>{onClick})
 
-==== ボタンに「イベントリスナー」を登録する
+=== ボタンに「イベントリスナー」を登録する
 
 マイルストーン @<code>{MainActivityDay1_5_ButtonWithEvents.java}
 
@@ -417,8 +432,9 @@
  * 今はとりあえずログを出力してお茶を濁す
  ** クリックされた時に何か起きていることを示す！
  ** @<code>{android.util.Log} というパッケージがあります
- ** (パッケージ！未出！)
-
+ ** パッケージ ... Javaの概念。「名前空間」と呼ばれる概念と関係がある
+ *** ここでは、ファイルを格納するフォルダ構造と同様なものと考えておく
+ *** @<href>{http://goo.gl/idxKQf}（名前空間 - Wikipedia）
 
 //list[onclick][onClick()ハンドラ]{
         public void onClick(View v) {
@@ -431,7 +447,6 @@
  *** そこだけプログラムが「実行」します。
  *** 言ってみればモーターみたいな「部品」です
  *** 組み合わせます。
-
 
 あなたはイベントを理解しました。
 
