@@ -50,4 +50,4 @@ colophon: true
 texstyle: reviewmacro
 pubhistory: |
   2014年04月10日 v0.1発行
-debug: true
+debug: True
