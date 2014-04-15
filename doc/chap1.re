@@ -1,14 +1,14 @@
 = 一日目
-== 目的
+== はじめに
 
- * 「マインスイーパ」をAndroidアプリとして実装してみる
+ * 目標: 「マインスイーパ」をAndroidアプリとして実装してみる
  * 前提: JavaとEclipseの扱いが少し分かること
  ** Javaで@<code>{if}, @<code>{for}といった概念が分かる。
  *** メソッド等についても書き方が分かる
  ** EclipseとAndroid SDKのインストール、ADTの準備ができている
  ** EclipseでAndroidプロジェクトのインポートが出来ること
 
-== 「マインスイーパ」とは
+=== 「マインスイーパ」とは
 
  * @<href>{http://goo.gl/yBHU77} (マインスイーパ - Wikipedia)
  * @<href>{http://minesweeperonline.com/#beginner}
@@ -18,7 +18,7 @@
 //image[minesweeper][マインスイーパ][]{
 //}
 
-== 「マインスイーパ」の仕様
+=== マインスイーパの「仕様」を考える
 
 //quote{
 仕様（しよう、英: Specification）とは、材料・製品・サービスが明確に満たさなければならない要求事項の集まりである。仕様を記述した文書を仕様書と呼ぶ。
@@ -55,7 +55,7 @@
  * implement ... 実装する
  * implementation ... 実装 (実装した結果、どうやって実装したか)
 
-=== Android上で実装する場合、何が必要か
+=== Android上で実装する場合、どのような要素が必要か
 
  * 「ゲームの流れ」を考えながら、何が必要かを考える
  ** 「構成要素」と「ゲームの流れ」でアプリの捉え方が少し違う
@@ -89,28 +89,68 @@
  * ちなみに、スマホでは「終了」ボタンは要らないので仕様で考える必要もない
  ** 但し、高度なゲームでは「中断」については考える必要がある
 
-== アプリを動かしてみる
 
-まず目標を理解した上で、何でもいいからアプリを動かしてみる。
+== サンプルプロジェクトをコンパイルしてアプリを実行する（@<code>{MainActivityDay1_0_Start.java}）
 
-アプリケーション（アプリ）のプロジェクトは@<code>{src/} ディレクトリにある。
+目標（「マインスイーパを作る」）とそれを達成する要素を考慮した上で、
+まず最初にサンプルプロジェクトを動作させることから始める。
 
-==== 使用するツール類の概説（復習）
+アプリケーション（アプリ）のプロジェクトは@<code>{src/AndroidQuickTraining} ディレクトリにある。
+これをEclipseにインポートする。
 
- * Eclipse
- ** @<href>{http://goo.gl/qNvb3J} (統合開発環境 - Wikipedia)
- ** 統合開発環境: ソフトウェア開発に必要な複数のツールをまとめたソフトウェア
- *** エディタ: 何かを編集するためのソフト。メモ帳のお化けみたいなもの
- *** コンパイラ: ソースコードから実際のソフトウェアとして動作する実行コードを生成するもの
- *** デバッガ: ぼっこわれた時にどこが壊れたか、どうやって壊れたかを調べる (デバッグ) ためのツール
- ** 便利機能がたくさんある -> 技術者はエディタの機能に慣れたり、機能を追加したりもする
- * Android SDK
- ** Androidのソフトウェア開発を行うための「ソフトウェア開発キット」
- * ADT Plugin for Eclipse... Android Developer Tools
- ** Eclipseは色々なソフトウェア開発に使う
- ** Android SDKとセットで用意することで「Eclipse上でAndroidアプリの開発を行えるようにする」ツールとなる。
+ * Eclipseへのインポート方法
+  * File -> New -> Project.. を選択
+  * Androidフォルダの Android Project from Existing Code を選択
+  * Browse ボタンを押し、サンプルプロジェクトのフォルダを選択して OK
+  * src/AndroidQuickTraining を選択して Finish
+ * 注意: Android 4.4.2とエミュレータ用の仮想デバイスを準備しておくこと
+ ** 詳細な説明は省略
 
-=== アプリの構造を（一部）理解する
+//image[sdk-and-virtual-device-manager-mod][SDKマネージャと仮想デバイスマネージャ][]{
+//}
+
+ * 実行方法
+ ** Run -> Run
+ ** プロジェクトフォルダを右クリックでも良い（@<img>{run-as-android-application}）
+
+//image[run-as-android-application][サンプルプロジェクトを実行する][]{
+//}
+
+
+=== 参考: 使用するツールの復習
+==== Eclipse
+
+ * @<href>{http://goo.gl/qNvb3J} (統合開発環境 - Wikipedia)
+ * 統合開発環境: ソフトウェア開発に必要な複数のツールをまとめたソフトウェア
+ ** エディタ: 何かを編集するためのソフト。メモ帳のお化けみたいなもの
+ ** コンパイラ: ソースコードから実際のソフトウェアとして動作する実行コードを生成するもの
+ ** デバッガ: ぼっこわれた時にどこが壊れたか、どうやって壊れたかを調べる (デバッグ) ためのツール
+ * 便利機能がたくさんある -> 技術者はエディタの機能に慣れたり、機能を追加したりもする
+
+==== Android SDK
+ * Androidのソフトウェア開発を行うための「ソフトウェア開発キット」
+
+==== ADT Plugin for Eclipse
+
+ * Android Developer Tools
+ * Eclipseは色々なソフトウェア開発に使う
+ * Android SDKとセットで用意することで「Eclipse上でAndroidアプリの開発を行えるようにする」ツールとなる。
+
+==== エミュレータ
+
+ * パソコンの中でAndroidアプリを試しに実行出来る
+ * emulator -> emulate = 模倣する、真似する
+ * 色々制約がある
+ ** 動作がとても遅い
+ ** GPSやカメラといった機構を使いづらい
+ ** etc.
+
+ エミュレータは起動しっぱなしにしておこう
+
+ * エミュレータ自体の起動が非常に遅い。人生は短い
+ * なお、実機（本物のAndroid端末）を準備出来れば、直接実行することも可能
+
+=== アプリの構造を一部理解する
 
 今回のサンプルプロジェクトでは、本トレーニングのステップに応じた実装結果が含まれている。
 
@@ -136,25 +176,6 @@
  ** 端末のどういう機能を使ってもいいのか（Permission）
  *** 最近のスマホの情報流出に関わる重要事項。でも今回は関係がない。
 
-===== 今回変更するのは @<code>{android:name} の部分のみ
-
-具体的には以下のような部分の@<code>{android:name=""}のダブルクオートで囲われている部分だけ。
-
-//list[android_manifest_app_name][@<code>{AndroidManifest.xml}の該当部分]{
-<activity
-  android:name="com.example.training.MainActivityDay1_0_Start"
-  android:label="@string/app_name" >
-  <intent-filter>
-    <action android:name="android.intent.action.MAIN" />
-    <category android:name="android.intent.category.LAUNCHER" />
-  </intent-filter>
-</activity>
-//}
-
- * 意味は「最初に起動する@<code>{Activity}はどれか」
- ** アプリのアイコンをクリックした際に開く画面を指定できる
- ** 今回のトレーニングでは一番重要な場所
-
 ==== その他の要素
 
  * @<code>{src/} ディレクトリ
@@ -168,31 +189,77 @@
  ** @<code>{res/}に含まれるリソースの中でも「レイアウト」と呼ばれるものを保存する。
  ** 使い方は後述する
 
-== アプリを実行する
+== ここからの進め方
+=== 変更点を手動で入力する方法
 
-（チェックポイント: @<code>{MainActivityDay1_0_Start.java}）
+理想的には、実際に自分で入力しながらステップ毎のファイルと比較する方法を採ると良い。
+その場合は、@<code>{MainActivity.java}と@<code>{fragment_main.xml}の組を用いて演習を行う。
 
- * 今回は「エミュレータ」を用いる
- ** emulator -> emulate = 模倣する、真似する
- ** パソコンの中で気軽に実験出来る
- ** 動作がとても遅い
- ** GPSやカメラといった機構を使いづらい
- ** その他色々制約がある
- * 実機にアプリを導入できれば、直接実行することも可能
- ** 実機 ... 本物の端末
- ** 使っているソースコードは同じもの
- * EclipseでRun -> Runを実行する
- * エミュレータは起動しっぱなしにしておこう
- ** エミュレータ自体の起動が非常に遅い。人生は短い
+なお、@<code>{AndroidManifest.xml}は、サンプルプロジェクトをインストールした時点で
+@<code>{MainActiivty.java}を利用する設定になっている。
 
-=== 色々試してみよう
+//list[default_android_manifest_part][@<code>{AndroidManifest.xml}内で@<code>{Activity}が指定されている箇所]{
+<activity
+    android:name="com.example.training.MainActivity"
+    android:label="@string/app_name" >
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN" />
+    <category android:name="android.intent.category.LAUNCHER" />
+  </intent-filter>
+</activity>
+//}
 
- * 今回のトレーニングのステップに沿った@<code>{Activity}が複数収録されている
- * 切り替えることで、特定のステップの画面を見ることが出来る
- * 「チェックポイント」に@<code>{Activity}名が記載されているので@<code>{AndroidManifest.xml}の@<code>{app:name=""}のダブルクォート内を変更して、再度実行する
- ** 正確にこのドキュメントのステップ毎にはなっていない
+@<code>{MainActivity.java}も@<code>{fragment_main.xml}を参照する状態になっている。
 
-=== 「信頼されていない」アプリ
+//list[how_to_change_layout][@<code>{Activity}内でレイアウトが指定されている箇所]{
+@Override
+public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                         Bundle savedInstanceState) {
+  View rootView = inflater.inflate(R.layout.mine_fragment_day1_1_show_1_button, container,
+      false);
+    return rootView;
+  }
+//}
+
+どうしても先に進めなくなった場合、Eclipse上で各チェックポイントとなる
+@<code>{Activity}ファイルを@<code>{AndroidManifest.xml}に指定することで、
+該当するステップにおける動作を確認することが出来る。
+
+レイアウトの編集に躓いた場合、@<code>{MainActivity.java}で指定されているレイアウトを、
+各ステップのレイアウトファイルに変えてみると良い。
+
+なお、@<code>{MainActivity.java}と@<code>{MainActivityDay1_0_Start.java}は、
+サンプルプロジェクトのダウンロード時点では（Javaのクラス名を除いて）一致している。
+同様に@<code>{fragment_main.xml}と@<code>{mine_fragment_day1_0.xml}も、
+サンプルプロジェクトのダウンロード時点では内容が同じになっている。
+
+=== 変更点をチェックポイント毎に追う方法
+
+@<code>{AndroidManifest.xml}で使用する@<code>{Activity}をチェックポイントの実装に切り替えることで、
+本トレーニングの動作をステップごとに確認出来る。
+@<code>{android:name=""}のダブルクオート内を適切に変更すること。
+
+（この方法で速習を行う場合、レイアウトファイルの設定を変更する必要はない）
+
+//list[use_day2_0_start][@<code>{AndroidManifest.xml}内で二日目冒頭の@<code>{Activity}を参照する例]{
+<activity
+    android:name="com.example.training.MainActivityDay2_0_Start"
+    android:label="@string/app_name" >
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN" />
+    <category android:name="android.intent.category.LAUNCHER" />
+  </intent-filter>
+</activity>
+//}
+
+=== 「空白」「改行」「全角文字」に注意
+
+ * プログラムの中では意味が当然違う。
+ ** 特に「全角」はエラーになる (エラーと警告の違いについては後述)
+ * おまけ: @<href>{http://ja.wikipedia.org/wiki/Whitespace}
+ ** 真っ白なプログラム: @<href>{http://compsoc.dur.ac.uk/whitespace/count.ws}
+
+=== 「提供元不明のアプリ」
 
 開発中のアプリを実機にインストールする場合、
 設定画面「提供元不明のアプリ」にチェックを入れる必要がある。@<img>{untrusted-source}
@@ -206,13 +273,6 @@
  ** 「署名」 ... アプリ開発で印鑑を押すようなもの。今回は省略
  *** 正式にGoogleのWebサイト上で販売したりする場合は必須になる
  * 注意: これを行うと、Googleの公式マーケット以外から提供された危険なアプリをインストールしても気づかない
-
-=== 「空白」「改行」「全角文字」に注意
-
- * プログラムの中では意味が当然違う。
- ** 特に「全角」はエラーになる (エラーと警告の違いについては後述)
- * おまけ: @<href>{http://ja.wikipedia.org/wiki/Whitespace}
- ** 真っ白なプログラム: @<href>{http://compsoc.dur.ac.uk/whitespace/count.ws}
 
 === 脱線: プログラマはインデックスを「0から始める」のがお好き
 
@@ -236,7 +296,7 @@
 
 サンプルプロジェクトのファイル名でも、1-originと0-originが混ざってしまっている。
 
-== アプリに部品を配置する
+== アプリにボタンを1つ配置する（MainActivityDay1_1_Show1Button.java）
 
 初期状態となる@<code>{layout/mine_fragment_day1_0.xml}の中身は以下の通り。
 
@@ -259,47 +319,43 @@
 </RelativeLayout>
 //}
 
-=== レイアウト
+=== レイアウトとは何か
 
- * 家具のレイアウトなどと同じ感じで、レイアウトを指定するとAndroid OS本体が勝手によしなにしてくれる仕組みがある
- ** 個々のパーツを「ウィジェット」などと呼んだりすることがある。覚えなくて良い
+ * 「どう部品が配置されるか」を指定する
+ ** 「家具のレイアウト」とニュアンスは同じ。
+ * アプリ内でレイアウトを指定すると、Android OS本体がその指定どおりに部品を表示する
  * 「レイアウトエディタ」 ... 「レイアウト」を編集するツール (復習: 「エディタ」)
- * @<code>{AndroidManifest.xml}に続いて、XML形式のファイルを再びいじります
+ * @<code>{AndroidManifest.xml}に続いて、XML形式のファイルを再び変更する
 
-=== @<code>{res/layout/} 下のレイアウトファイル
+==== @<code>{res/layout/}について
 
- * 既出の@<code>{res/layout} の下にレイアウト設定ファイルがある
+ * このフォルダの配下にレイアウト設定ファイルがある
  * レイアウト設定ファイルに「部品」を配置する
- * 「部品」（パーツ）は「ウィジェット」とか@<code>{View}と呼ばれる
- ** @<code>{View} ... 「見える何か」
- ** 実際には、レイアウト中の全ての部品(「ウィジェット」)は@<code>{View}を「継承」している
- * 今回扱う部品は3種類（全て@<code>{View}を「継承」している）
- ** @<code>{LinearLayout} ... 横並び、縦並びに配置する
- *** Linear: 「直線の」「まっすぐ」
+
+==== 今回用いるレイアウト用の部品について
+
+ * 個々の「部品」（パーツ）は「ウィジェット」とか@<code>{View}とも呼ばれる
+ ** 今回は「部品」とだけ覚えておけば良い
+ * @<code>{LinearLayout} ... 横並び、縦並びに配置する
+ ** Linear: 「直線の」「まっすぐ」
  *** 「リニアモーターカー」のリニア
- ** @<code>{Button} ... ユーザが押せるボタンを配置する
- *** 今回の8x8のマス目を構成する
- ** @<code>{TextView} ... 文字列を表示する
- *** メッセージの表示に使える
- * 関係するレイアウト
- ** @<code>{RelativeLayout} ... 「相対位置」を指定するもの
- *** 今回は使用しない
- ** どう配置するかをXMLで指定する
- *** XML ... Extensible Markup Language
- *** とりあえず「設定ファイルで指定する」とでも覚えましょう
- ** 今は「レイアウトエディタ」というものが便利です
- *** また出ました。エディタ
- *** エディタ: 何かを編集するためのソフト
- **** @<href>{http://goo.gl/wzI058}（エディタ - Wikipedia）
+ * @<code>{Button} ... ユーザが押せるボタンを配置する
+ ** 今回の8x8のマス目を構成する
+ * @<code>{TextView} ... 文字列を表示する
+ ** メッセージの表示に使える
 
-=== RelativeLayoutをLinearLayoutに置き換える
+=== @<code>{LinearLayout}を配置する
 
- * 今回は@<code>{RelativeLayout}は使いません
+@<code>{LinearLayout}を配置するため、
+レイアウトを記述したXML（Extensible Markup Language、「えっくすえむえる」と読む）を編集する。
+
  * @<code>{LinearLayout}にとりあえず変更します。
  ** 「横に並べる」「縦に並べる」だけであればこちらの方がはるかに楽なため
+ * （もともとプロジェクトに@<code>{RelativeLayout}は使いません
+ * 「レイアウトエディタ」というものが便利です
+ ** @<href>{http://goo.gl/wzI058}（エディタ - Wikipedia）
 
-
-=== ボタンを配置する
+=== ボタン（@<code>{Button}）を配置する
 
 （チェックポイント: MainActivityDay1_1_Show1Button.java）
 
@@ -308,60 +364,63 @@
  ** レイアウトエディタで遊んでみましょう
  * テキストを編集してみます。
 
-==== 開発Tips: 「エラー」と「警告」に注意
+=== 参考: 「エラー」と「警告」に注意
 
- * (多分ミスるが、ミスっていなかったらここで@<code>{LinearLayout}のタイポなどをやってみる -> エラー)
- * (同様に、@<code>{@string/hello_world} を別の文字列に変えてしまう -> 警告)
- * ソースコードを「コンパイル」「ビルド」してアプリを作りますが
- ** 「エラー」: 「そ　れ　で　は　う　ご　き　ま　せ　ん」
- ** 「警告」: 「こんなことやってると、後で痛い目見るよ」
- * (デモ: 全角スペースをレイアウトに入れると謎のエラー)
- * エラー: 要は「それは、間違っている」
- ** プログラムはコンピュータから見た時に「厳密」である必要がある
- *** 空気読んでくれない
- *** ぶっちゃけると「出来る事ならば空気を読ませたくない」ものでもある
- ** 挙動はプログラム言語の「仕様」に記載されている
- * 警告の例: strings.xml を使わない
- ** これは「エラー」とは違う
+ * 「エラー」: 「そ　れ　で　は　う　ご　き　ま　せ　ん」
+ * 「警告」: 「こんなことやってると、後で痛い目見るよ」
+ * 例
+ ** @<code>{LinearLayout}のタイポを混入 -> エラー
+ ** @<code>{@string/hello_world} を別の文字列に変えてしまう -> 警告
+ * エラーは直さなければ動作しない
+ * 警告は、動作はするものの、推奨されず、意図しない動作をすることが非常に多い
+ ** 色々な理由で起こるが、理由なしに無視をしないほうが良い
 
-=== ボタンを8つ並べる (MainActivityDay1_2_Show8Buttons.java)
+== ボタン（@<code>{Button}）を8つ並べる (MainActivityDay1_2_Show8Buttons.java)
 
- * 8つ並べます
- * ええと……縦にも並べたい……
+ * 8つ並べる
+ * @<code>{LinearLayout}が「横に並べる」
 
-=== マインスイーパ風にボタンを 8x8 に並べる (MainActivityDay1_3_Show88Buttons.java)
+== ボタンを8x8の格子状に並べる (MainActivityDay1_3_Show88Buttons.java)
 
- * え、どうやってやるの
- * 一歩下がって「どうやって実現するか」を想像する -> 想像した方法がどう実現できるかを調べる
- * 「慌てるな、俺はマインスイーパの8x8の盤面を作りたいだけなんだ」
- * @<code>{LinearLayout} をもう一度考えてみよう
- ** @<code>{LinearLayout} ... 横並び、縦並びに配置してください
- * @<code>{LinearLayout} は別の@<code>{LinearLayout}を並べるのにも使えます！
- ** ボタンを8つ持つ@<code>{LinearLayout}を並べればいい
- * トップレベルのパーツ(「ウィジェット」)には特別な意味が色々あります
- ** 説明は省略しますが……
- ** ここでは「注意して」レイアウトを重ねてみましょう
- ** 説明を省略する事項
- *** match_parent, wrap_content
- * orientation... ？(´・ω・`)
- ** orientation ... 方向
- *** 新歓オリエンテーションとは関係がありません (同じ単語ですが)
- *** 英単語としては「方向を定める」といった感じのニュアンスです
- * @<code>{LinearLayout} をもう一度考えてみよう
- ** @<code>{LinearLayout} ... 横並び、縦並びに配置してください
- ** ……どっちよ
- ** 何も指定していない状況では……横並びです！
- * いわゆる「コピペ」作業発生！
- ** idがかぶります
- ** 一般的に「コピペ」は良くないとされます。
- ** 何故？
- *** 重複しては行けない情報が重複する
- *** 意味が分かってないことが多い
- *** 「コピペ」で出来るのならおそらく「自動化」出来る
- **** 素早く作業するのであれば自動化に勝る高速化はない
- * 3分間クッキングよろしく、作っておきました……！
+8x8の格子状にボタンを配置するには、今度は縦に@<code>{LinearLayout}を並べることになる。
 
-==== ボタンについているidとは……?
+ * 復習: @<code>{LinearLayout} ... 横並び、縦並びに配置してください
+ * @<code>{LinearLayout} は別の@<code>{LinearLayout}を並べるのにも使える
+ * ボタンを8つ持つ@<code>{LinearLayout}を8つ並べる
+
+
+ * 注意: レイアウトを記述したXMLのトップレベルの部品（今回は最初の@<code>{LinearLayout}）には特別な意味がある
+ ** 注意してレイアウトを重ねること
+
+=== @<code>{LinearLayout}と@<code>{Button}のサイズや意味を変更する
+
+ * XMLの@<code>{<こういうの>}を「タグ」、その中の@<code>{something=""}というのを「属性」と呼ぶ
+ ** 参考: @<href>{http://www.atmarkit.co.jp/aig/01xml/attribute.html}
+ * 属性を変更することで、「部品」の動作を詳細に記述する
+ * 今回把握しておくべき属性
+ ** @<code>{android:layout_width}, @<code>{android:layout_height}
+ ** @<code>{android:minWidth}, @<code>{android:minWidth}
+ ** @<code>{android:orientation}（@<code>{LinearLayout}で使う）
+ *** orientation ... 方向
+ *** 「横並び」なのか「縦並び」なのかを@<code>{orientation}という属性で指定することが出来る
+ *** 「並び」が影響するのは今回は@<code>{LinearLayout}だけ
+ *** 何も指定していない状況では横並びになる。
+ ** @<code>{android:id} ... 今は各ボタンに重複なく割り当てられていればOK
+ *** サンプルプロジェクトでは@<code>{@+id/buttonXY}（X座標とY座標）としている
+
+いわゆる「コピペ」作業を行う
+
+ * idがかぶります
+ * 一般的に「コピペ」は良くないとされます。
+ * 何故？
+ ** 重複しては行けない情報が重複する
+ ** 意味が分かってないことが多い
+ ** 「コピペ」で出来るのならおそらく「自動化」出来る
+ *** 素早く作業するのであれば自動化に勝る高速化はない
+
+@<code>{mine_fragment_day1_3_show_88_buttons.xml}を用いても良い。
+
+==== ボタンについているidとは
 
  * ボタン一個一個にIDを振ってあります
  * @<code>{@+id/buttonXY}と今回はしました
