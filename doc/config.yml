@@ -32,7 +32,7 @@ description:
 # coverfile: カバーページのbody要素内に挿入する内容を記述したファイル名
 coverfile: _cover.html
 # coverimage: 表紙用画像ファイル
-coverimage: cover.jpg
+coverimage: null
 # 固有IDに使用するドメイン
 urnid: http://mowa-net.jp
 # CSSファイル (yamlファイルおよびRe:VIEWファイルを置いたディレクトリにあること
