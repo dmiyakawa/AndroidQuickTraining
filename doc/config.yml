@@ -11,7 +11,7 @@ aut: 宮川大輔
 prt: もわねっと
 prt_url:  https://mowa-net.jp
 edt: 宮川大輔
-date: 2014-04-10
+date: 2014-04-16
 rights: |
   (C) 2014 Daisuke Miyakawa
 description: 
@@ -50,4 +50,5 @@ colophon: true
 texstyle: reviewmacro
 pubhistory: |
   2014年04月10日 v0.1発行
+  2014年04月16日 v0.2発行
 debug: True
