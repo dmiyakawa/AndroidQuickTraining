@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivityDay2_7_SimpleMineSweeper extends ActionBarActivity {
+public class MainActivityDay2_9_SupportRandomMines extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,15 +120,12 @@ public class MainActivityDay2_7_SimpleMineSweeper extends ActionBarActivity {
 
             handleButtonClick(view_x, view_y, rootView, button);
 
-            // もし全てを開ききったら……
+            // もし全てを開ききったら「クリア」状態にする
             // 計算方法:
-            // マス目の総数が 8x8 で 64
-            // 爆弾の数が mNumBombs
-            // なので
-            // 開いていないマス目がNUM_BOMBSで
-            // しかもゲームオーバーになっていなかったら、クリア
-            // ゲームオーバーの場合、このメソッド onClick() はここまで処理を実行しない！
-            // というわけで、上のチェックをするだけで良い
+            // 爆弾の数が mNumBombs なので
+            // 開いていないマス目が mNumBombsで、しかもゲームオーバーになっていなかったら「クリア」
+            // ゲームオーバーの場合、このメソッド onClick() はここまで処理を実行しないので、
+            // 空いているマス目の数とmNumBombsを比較するだけで良い。
             int numOpenCell = 0;
             for (int x = 0; x < 8; x++) {
                 for (int y = 0; y < 8; y++) {
@@ -219,8 +216,10 @@ public class MainActivityDay2_7_SimpleMineSweeper extends ActionBarActivity {
                     mIsBomb[x][y] = false;
                 }
             }
+
+            // 爆弾をランダムに配置するメソッドを呼び出す。
             setBombRandomly();
-            // デバッグするときは代わりに以下を有効にする
+            // 爆弾を固定位置に配置するメソッドを呼び出す(デバッグする際に有効にする)
             // setBombManually()
         }
 
@@ -242,12 +241,12 @@ public class MainActivityDay2_7_SimpleMineSweeper extends ActionBarActivity {
         }
 
         public void setBombManually() {
-            // 手動で設定したボムの数はNUM_BOMBSと異なる
+            // 手動で設定したボムの数はNUM_BOMBSと異なるのでここで変更する
             mNumBombs = 4;
             mIsBomb[0][0] = true;
             mIsBomb[3][4] = true;
             mIsBomb[5][6] = true;
-            mIsBomb[6][2] = true;            
+            mIsBomb[6][2] = true;
         }
     }
 }

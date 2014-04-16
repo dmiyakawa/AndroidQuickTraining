@@ -12,7 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-public class MainActivityDay1_5_ButtonsWithEvents extends ActionBarActivity {
+public class MainActivityDay1_5_HandleOneEvent extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +47,7 @@ public class MainActivityDay1_5_ButtonsWithEvents extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment implements
-            OnClickListener {
+    public static class PlaceholderFragment extends Fragment implements OnClickListener {
 
         public PlaceholderFragment() {
         }
@@ -57,11 +56,9 @@ public class MainActivityDay1_5_ButtonsWithEvents extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(
-                    R.layout.mine_fragment_day1_4_better_88_buttons, container,
-                    false);
+                    R.layout.mine_fragment_day1_4_better_88_buttons, container, false);
             Button button00 = (Button) rootView.findViewById(R.id.button00);
             button00.setOnClickListener(this);
-
             return rootView;
         }
 

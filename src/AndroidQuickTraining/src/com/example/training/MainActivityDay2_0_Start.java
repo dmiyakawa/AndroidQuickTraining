@@ -55,8 +55,7 @@ public class MainActivityDay2_0_Start extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.mine_fragment_day2,
-                    container, false);
+            View rootView = inflater.inflate(R.layout.mine_fragment_day2, container, false);
             Button button00 = (Button) rootView.findViewById(R.id.button00);
             button00.setOnClickListener(this);
             return rootView;

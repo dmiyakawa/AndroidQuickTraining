@@ -1,9 +1,12 @@
 package com.example.training;
 
+import java.util.Random;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,8 +16,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
-public class MainActivityDay2_6_SupportResetButton extends ActionBarActivity {
+public class MainActivityDay2_8_SupportClearState extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +53,10 @@ public class MainActivityDay2_6_SupportResetButton extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment implements OnClickListener {        
+    public static class PlaceholderFragment extends Fragment implements OnClickListener {
         private int[][] mButtonIds = new int[8][8];
         private boolean[][] mIsBomb = new boolean[8][8];
-
+        
         public PlaceholderFragment() {
         }
 
@@ -86,12 +90,14 @@ public class MainActivityDay2_6_SupportResetButton extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
+            Button button = (Button) v;
             View rootView = getView();
-            if (v.getId() == R.id.reset_button) {
+            if (button.getId() == R.id.reset_button) {
                 initializeGameState(rootView);
                 return;
             }
 
+            // 関連するidを探します。ちなみに非常に酷い方法です
             boolean found = false;
             int view_x = -1;
             int view_y = -1;
@@ -109,16 +115,43 @@ public class MainActivityDay2_6_SupportResetButton extends ActionBarActivity {
                 }
             }
 
-            Log.d("test", "Clicked! x=" + view_x + ", y=" + view_y);
-            if (mIsBomb[view_x][view_y]) {
-                ((Button) v).setText("爆");
-                ((Button) v).setTextColor(Color.RED);
+            handleButtonClick(view_x, view_y, rootView, button);
 
-                // 全てのボタンを押せないようにする
+            // もし全てを開ききったら「クリア」状態にする
+            // 計算方法:
+            // 爆弾の数が4つなので
+            // 開いていないマス目が4つで、しかもゲームオーバーになっていなかったら「クリア」
+            // ゲームオーバーの場合、このメソッド onClick() はここまで処理を実行しないので、
+            // 空いているマス目の数と数字の4を比較するだけで良い。
+            int numOpenCell = 0;
+            for (int x = 0; x < 8; x++) {
+                for (int y = 0; y < 8; y++) {
+                    if (TextUtils.isEmpty(
+                            ((Button) rootView.findViewById(mButtonIds[x][y])).getText())) {
+                        numOpenCell = numOpenCell + 1;
+                    }
+                }
+            }
+            if (numOpenCell == 4) {
+                ((TextView) rootView.findViewById(R.id.top_message)).setText(R.string.clear);
                 for (int x = 0; x < 8; x++) {
                     for (int y = 0; y < 8; y++) {
-                        Button button = (Button)rootView.findViewById(mButtonIds[x][y]);
-                        button.setEnabled(false);
+                        ((Button)rootView.findViewById(mButtonIds[x][y])).setEnabled(false);
+                    }
+                }
+            }
+        }
+
+        private void handleButtonClick(int view_x, int view_y, View rootView, Button button) {
+            Log.d("test", "Clicked! x=" + view_x + ", y=" + view_y);
+            if (mIsBomb[view_x][view_y]) {
+                button.setText("爆");
+                button.setTextColor(Color.RED);
+
+                // 全てのボタンを押せなくする
+                for (int x = 0; x < 8; x++) {
+                    for (int y = 0; y < 8; y++) {
+                        ((Button)rootView.findViewById(mButtonIds[x][y])).setEnabled(false);
                     }
                 }
             } else {
@@ -136,24 +169,45 @@ public class MainActivityDay2_6_SupportResetButton extends ActionBarActivity {
                         }
                     }
                 }
-
-                ((Button) v).setText(String.valueOf(numOfBombs));
+                button.setText(String.valueOf(numOfBombs));
+                
+                if (numOfBombs == 0) {
+                    for (int y = view_y - 1; y <= view_y + 1; y++) {
+                        if (y < 0 || y >= 8) {
+                            continue;
+                        }
+                        for (int x = view_x - 1; x <= view_x + 1; x++) {
+                            if (x < 0 || x >= 8) {
+                                continue;
+                            }
+                            Button neighborButton =
+                                    (Button) rootView.findViewById(mButtonIds[x][y]);
+                            // 「開いている」 == 「文字が書き込まれている」 (今回はそうした)
+                            if (TextUtils.isEmpty(neighborButton.getText())) {
+                                // このメソッドをさらに呼んでしまう (再帰)
+                                handleButtonClick(x, y, rootView, neighborButton);
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        // 初期化する
         private void initializeGameState(View rootView) {
-            // ボタンの状態をリセットします
+            // 「クリアした」を表示する一番上のTextViewをリセット
+            ((TextView) rootView.findViewById(R.id.top_message)).setText(R.string.yukkuri);
+
             for (int x = 0; x < 8; x++) {
                 for (int y = 0; y < 8; y++) {
-                    Button button = (Button)rootView.findViewById(mButtonIds[x][y]);
                     // 書き込んだ文字を消す
+                    Button button = (Button)rootView.findViewById(mButtonIds[x][y]);
                     button.setText("");
-                    // ボタンを押せるようにする
+                    button.setTextColor(Color.BLACK);
                     button.setEnabled(true);
                 }
             }
-            
+
+            // 爆弾を配置する前に、まず全ての設置済みの爆弾を撤去する
             for (int x = 0; x < 8; x++) {
                 for (int y = 0; y < 8; y++) {
                     mIsBomb[x][y] = false;
@@ -162,7 +216,7 @@ public class MainActivityDay2_6_SupportResetButton extends ActionBarActivity {
             mIsBomb[0][0] = true;
             mIsBomb[3][4] = true;
             mIsBomb[5][6] = true;
-            mIsBomb[6][2] = true;   
+            mIsBomb[6][2] = true;
         }
     }
 }

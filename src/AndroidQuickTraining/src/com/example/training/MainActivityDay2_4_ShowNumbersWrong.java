@@ -1,5 +1,6 @@
 package com.example.training;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -13,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class MainActivityDay2_2_HandlingAllEventsWithXY extends ActionBarActivity {
+public class MainActivityDay2_4_ShowNumbersWrong extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,6 @@ public class MainActivityDay2_2_HandlingAllEventsWithXY extends ActionBarActivit
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -51,6 +51,7 @@ public class MainActivityDay2_2_HandlingAllEventsWithXY extends ActionBarActivit
      */
     public static class PlaceholderFragment extends Fragment implements OnClickListener {
         private int[][] mButtonIds = new int[8][8];
+        private boolean[][] mIsBomb = new boolean[8][8];
 
         public PlaceholderFragment() {
         }
@@ -58,6 +59,11 @@ public class MainActivityDay2_2_HandlingAllEventsWithXY extends ActionBarActivit
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
+            mIsBomb[0][0] = true;
+            mIsBomb[3][4] = true;
+            mIsBomb[5][6] = true;
+            mIsBomb[6][2] = true;
+            
             LinearLayout rootView = (LinearLayout)
                     inflater.inflate(R.layout.mine_fragment_day2, container, false);
             for (int index=0, y=0; index < rootView.getChildCount(); index++) {
@@ -96,8 +102,48 @@ public class MainActivityDay2_2_HandlingAllEventsWithXY extends ActionBarActivit
                     break;
                 }
             }
+
             Log.d("test", "Clicked! x=" + view_x + ", y=" + view_y);
+            if (mIsBomb[view_x][view_y]) {
+                ((Button) v).setText("爆");
+                ((Button) v).setTextColor(Color.RED);
+            } else {
+                int numOfBombs = 0;
+                // 左上
+                if (mIsBomb[view_x-1][view_y-1]) {
+                    numOfBombs = numOfBombs + 1;
+                }
+                // 上
+                if (mIsBomb[view_x][view_y-1]) {
+                    numOfBombs = numOfBombs + 1;
+                }
+                // 右上
+                if (mIsBomb[view_x][view_y+1]) {
+                    numOfBombs = numOfBombs + 1;
+                }
+                // 左
+                if (mIsBomb[view_x-1][view_y]) {
+                    numOfBombs = numOfBombs + 1;
+                }
+                // 中央は要らない
+                // 右
+                if (mIsBomb[view_x+1][view_y]) {
+                    numOfBombs = numOfBombs + 1;
+                }
+                // 左下
+                if (mIsBomb[view_x-1][view_y+1]) {
+                    numOfBombs = numOfBombs + 1;
+                }
+                // 下
+                if (mIsBomb[view_x][view_y+1]) {
+                    numOfBombs = numOfBombs + 1;
+                }
+                // 右下
+                if (mIsBomb[view_x+1][view_y+1]) {
+                    numOfBombs = numOfBombs + 1;
+                }
+                ((Button) v).setText(String.valueOf(numOfBombs));
+            }
         }
     }
-
 }

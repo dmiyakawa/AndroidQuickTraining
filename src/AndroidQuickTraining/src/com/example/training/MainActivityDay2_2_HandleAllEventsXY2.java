@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class MainActivityDay2_2_HandlingAllEventsWithXY2 extends ActionBarActivity {
+public class MainActivityDay2_2_HandleAllEventsXY2 extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,6 @@ public class MainActivityDay2_2_HandlingAllEventsWithXY2 extends ActionBarActivi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;

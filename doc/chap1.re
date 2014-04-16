@@ -115,12 +115,14 @@
 //}
 
  * 実行方法
- ** Run -> Run
- ** プロジェクトフォルダを右クリックでも良い（@<img>{run-as-android-application}）
+ ** Run -> Run（@<code>{Ctrl-F11}）
+ ** プロジェクト名経由でも出来る （@<img>{run-as-android-application}）
 
 //image[run-as-android-application][サンプルプロジェクトを実行する][]{
 //}
 
+ * Eclipseの「DDMSパースペクティブ」を利用してAndroidのログを見ることが出来る
+ * 特に関係するのはApplicationが@<code>{com.example.training}となっている場所
 
 === 参考: 使用するツールについて
 ==== Eclipse
@@ -263,6 +265,16 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
     <category android:name="android.intent.category.LAUNCHER" />
   </intent-filter>
 </activity>
+//}
+
+ * @<code>{Activity}の名前だけ間違えないように
+ * 例として@<img>{wrong-activity-name}
+ ** 誤: @<code>{android:name="com.example.training.MainActivityDay1_3_Show8Buttons"}（@<img>{wrong-activity-name2}に注目）
+ ** 正: @<code>{android:name="com.example.training.MainActivityDay1_2_Show8Buttons"}
+
+//image[wrong-activity-name][誤った@<code>{Activity}名を入れた場合の例]{
+//}
+//image[wrong-activity-name2][拡大結果]{
 //}
 
 
@@ -664,7 +676,7 @@ Eclipse上での簡単な対策の一つは、キーボード上で@<code>{Ctrl-
  *** @<href>{http://goo.gl/idxKQf}（名前空間 - Wikipedia）
 
 
-== ユーザがボタンを押したとき、アプリを反応させる（@<code>{MainActivityDay1_5_ButtonWithEvents.java}）
+== ユーザが一番左上のボタンを押したとき、アプリを反応させる（@<code>{MainActivityDay1_5_HandleOneEvent.java}）
 === 現状: ボタンを押しても何も起こらない
 
  * 今のところ、レイアウトにボタンを配置しただけ。
@@ -776,9 +788,6 @@ public void onClick(View v) {
   Log.d("test", "Clicked!");
 }
 //}
-
- * Eclipseの「DDMSパースペクティブ」を利用してログを見ることが出来る
- * 特に関係するのはApplicationが@<code>{com.example.training}となっている場所
 
 //image[ddms-example1][DDMS画面でClicked!が表示されている様子]{
 //}

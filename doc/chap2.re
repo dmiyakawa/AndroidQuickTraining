@@ -33,7 +33,7 @@
   tools:context="jp.ascii.training2014.MainActivity$PlaceholderFragment" >
 
   <TextView
-    android:id="@+id/textView1"
+    android:id="@+id/top_message"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/yukkuri"
@@ -70,7 +70,7 @@
 //image[meld-example][差分ツールの一つ@<code>{Meld}を@<code>{mine_fragment_day1_4_better_88_buttons.xml}と@<code>{mine_fragment_day2.xml}の2ファイルに対して適用した例][]{
 //}
 
-== 全てのボタンにイベントリスナーを設定する（@<code>{MainActivityDay2_1_HandlingAllEvents.java})
+== 全てのボタンにイベントリスナーを設定する（@<code>{MainActivityDay2_1_HandleAllEvents.java})
 
  * 一日目では「左上のボタン」に対してだけ「イベントリスナー」を登録した。
  * 全部のボタンにイベントを登録するにはどうすれば良いか。
@@ -111,7 +111,7 @@ public void onClick(View v) {
 }
 //}
 
-== ボタンのイベントリスナーがX座標、Y座標を得られるようにする（@<code>{MainActivityDay2_2_HandlingAllEventsWithXY.java})
+== ボタンのイベントリスナーがX座標、Y座標を得られるようにする（@<code>{MainActivityDay2_2_HandleAllEventsXY.java})
 
  * "Clicked!"だけでは「どれ」がクリックされたかが分からない。
  ** それがわからないと「爆弾を踏んだか」も分からない
@@ -184,7 +184,7 @@ public static class PlaceholderFragment extends Fragment implements OnClickListe
  * マインスイーパだから許されるが、仮にGoogleのサーバでこの類のプログラミングをやるとどうなるか？
  * 対策の一つ: いわゆる「ハッシュテーブル」と呼ばれるものを使う。
 
-//list[possibly_better_xy][@<code>{MainActivityDay2_2_HandlingAllEventsWithXY2.java}]{
+//list[possibly_better_xy][@<code>{MainActivityDay2_2_HandleAllEventsXY2.java}]{
 private static class XY {
     public int x;
     public int y;
@@ -237,7 +237,7 @@ public static class PlaceholderFragment extends Fragment implements OnClickListe
  ** また、実際に適用する場合は「ベンチマーク」を取るべき
  * 改善していないバージョン（@<code>{mButtonIds}を用いる方法）をそのまま使い続ける
 
-== クリックした場所が爆弾なら「爆」、爆弾ではないなら「開」と表示する（@<code>{MainActivityDay2_3_MineWithBombs.java}）
+== クリックした場所が爆弾なら「爆」、爆弾ではないなら「開」と表示する（@<code>{MainActivityDay2_3_ShowBombs.java}）
 === まず爆弾の位置を「初期化」する
 
  * 初期化 = Initialization ... 下準備
@@ -248,7 +248,7 @@ public static class PlaceholderFragment extends Fragment implements OnClickListe
  * このステップでは開いたら "開" とだけ表示することにする
  ** 本当は数字が表示される。次ステップ
 
-== 数字のヒントを表示するようにする（@<code>{MainActivityDay2_4_MineWithNumbersWrong.java}）
+== 数字のヒントを表示するようにする（@<code>{MainActivityDay2_4_ShowNumbersWrong.java}）
 
  * マインスイーパでは数字が出る。
  * 数字は「周囲の爆弾の数」を示している。
@@ -344,7 +344,7 @@ X座標, Y座標とレイアウトを対応させた以下のテーブルを再�
  * 例えばXが0のとき、X-1はいくつになるか -> -1 -> -1 は配列の外側
  * 例えばXが7のとき、X+1はいくつになるか -> 8 -> 8 は配列の外側
 
-== 問題となるコードを修正する（@<code>{MainActivityDay2_5_MineWithNumbersCorrect.java}）
+== 問題となるコードを修正する（@<code>{MainActivityDay2_5_ShowNumbersCorrect.java}）
 
  * 「XとYが0未満、8以上だったら、チェックしない」という実装にする
  ** @<code>{for}を使って(x-1〜x+1, y-1〜y+1)を指定する
@@ -415,48 +415,86 @@ private void initializeGameState(View rootView) {
  *** 初期化時にまた押せるようにするのを忘れないように
 
 
-== 「完成」を目指す（@<code>{MainActivityDay2_7_SimpleMineSweeper.java}）
-=== 自動的に展開する
+== 自動的に展開する（@<code>{MainActivityDay2_7_SupportExpand.java}）
 
  * 爆弾が隣り合ってなかったら、隣もクリックしたことにしてしまう
  ** 再帰呼び出し
  ** 本物と多分ちょっと違うが……
 
-=== 全部開いたら「クリアしました！」と表示して動作を止める
+== 全部開いたら「クリアしました！」と表示する（@<code>{MainActivityDay2_8_SupportClearState.java}）
 
- * Resetがあるのでゲームの再開は簡単です
+ * いつが「クリア」なのか？
+ * 固定で配置している爆弾の数が4つ
+ * よって、条件は「空いているマス目が4つ」
+ * 「空いている」とはすなわち「何も書かれていない」
+ ** @<code>{TextUtils.isEmpty()}というメソッドを使う。
+ ** @<code>{Button}に表示されている文字を取得するには@<code>{getText()}
 
-=== 爆弾を「ランダム」で配置する
 
-//list[random_and_fixed][爆弾をランダムで配置する例と固定位置で配置する例]{
-public void setBombRandomly() {
-    // 自動で設定したボムの数はNUM_BOMBSと一致する
-    mNumBombs = NUM_BOMBS;
-    Random random = new Random();
-    for (int i = 0; i < NUM_BOMBS; i++) {
-        while(true) {
-            int x = random.nextInt(8);
-            int y = random.nextInt(8);
-            if (!mIsBomb[x][y]) {
-                mIsBomb[x][y] = true;
-                break;
-            }
-        }
+//list[clear_condition][]{
+int numOpenCell = 0;
+for (int x = 0; x < 8; x++) {
+  for (int y = 0; y < 8; y++) {
+    if (TextUtils.isEmpty(
+        ((Button) rootView.findViewById(mButtonIds[x][y])).getText())) {
+      numOpenCell = numOpenCell + 1;
     }
-    
+  }
 }
-
-public void setBombManually() {
-    // 手動で設定したボムの数はNUM_BOMBSと異なる
-    mNumBombs = 4;
-    mIsBomb[0][0] = true;
-    mIsBomb[3][4] = true;
-    mIsBomb[5][6] = true;
-    mIsBomb[6][2] = true;            
+// 「クリアしている」は「空いているマス目が4つ」である
+if (numOpenCell == 4) {
+  ((TextView) rootView.findViewById(R.id.top_message)).setText(R.string.clear);
+  for (int x = 0; x < 8; x++) {
+    for (int y = 0; y < 8; y++) {
+      ((Button)rootView.findViewById(mButtonIds[x][y])).setEnabled(false);
+    }
+  }
 }
 //}
 
-==== 参考: 「ランダム」（「乱数」）を理解するのはとても難しい
+ * 「ゲームオーバーになっていない」という条件も一応ある
+ ** @<code>{onClick()}はdisabledなボタンに対しては呼ばれない
+ ** よって、今回のステップではゲームオーバーに関して何もする必要がない
+ * Resetボタンの実装はすでに適切にできているので、何もする必要はない
+
+
+== 爆弾を「ランダム」で配置する（@<code>{MainActivityDay2_8_Finished.java}）
+
+ * ランダムは@<code>{Random}を用いる
+ ** @<code>{nextInt(8)}で「0〜7のどれかを返す」という意味（7含む）
+ * ついでに爆弾の数を実際のマインスイーパと同じ「8個」にしてみる
+ ** 前回の「クリア条件」も変更する必要がある。
+ * サンプルコードではデバッグもしやすいように「固定値」の実装も別のメソッドという形で残すようにしてある。
+ ** 自分で実装する際にはここまでする必要はない。
+
+//list[random_and_fixed][爆弾をランダムで配置する例と固定位置で配置する例]{
+public void setBombRandomly() {
+  // 自動で設定したボムの数はNUM_BOMBSと一致する
+  mNumBombs = NUM_BOMBS;
+  Random random = new Random();
+  for (int i = 0; i < NUM_BOMBS; i++) {
+    while(true) {
+      int x = random.nextInt(8);
+      int y = random.nextInt(8);
+      if (!mIsBomb[x][y]) {
+        mIsBomb[x][y] = true;
+        break;
+      }
+    }
+  }
+}
+
+public void setBombManually() {
+  // 手動で設定したボムの数はNUM_BOMBSと異なる
+  mNumBombs = 4;
+  mIsBomb[0][0] = true;
+  mIsBomb[3][4] = true;
+  mIsBomb[5][6] = true;
+  mIsBomb[6][2] = true;            
+}
+//}
+
+==== 参考: 「ランダム」（「乱数」）な値を自力で用意するのはとても難しい
 
  * 本当の意味での「ランダム」というのは「予測不可能」である必要がある
  ** 予測可能だと情報を盗まれたりすることもある
@@ -467,6 +505,8 @@ public void setBombManually() {
  ** 一応いくつもある
  * （擬似）乱数を侮った好例: カルドセプトサーガの乱数問題
  ** 参考 @<href>{http://ledyba.org/2006/12/19032902.php}
+ * 今回はJava付属の@<code>{Random}を使ったが……
+ ** 使い方に注意が必要
 
 
 == 今後の課題: 更にゲームを強化する

@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class MainActivityDay2_5_MineWithNumbersCorrect extends ActionBarActivity {
+public class MainActivityDay2_3_ShowBombs extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,6 @@ public class MainActivityDay2_5_MineWithNumbersCorrect extends ActionBarActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -109,22 +108,7 @@ public class MainActivityDay2_5_MineWithNumbersCorrect extends ActionBarActivity
                 ((Button) v).setText("爆");
                 ((Button) v).setTextColor(Color.RED);
             } else {
-                int numOfBombs = 0;
-                for (int y = view_y - 1; y <= view_y + 1; y++) {
-                    if (y < 0 || y >= 8) {
-                        continue;
-                    }
-                    for (int x = view_x - 1; x <= view_x + 1; x++) {
-                        if (x < 0 || x >= 8) {
-                            continue;
-                        }
-                        if (mIsBomb[x][y]) {
-                            numOfBombs = numOfBombs + 1;
-                        }
-                    }
-                }
-
-                ((Button) v).setText(String.valueOf(numOfBombs));
+                ((Button) v).setText("開");
             }
         }
     }
