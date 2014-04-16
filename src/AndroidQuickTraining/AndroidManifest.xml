@@ -93,7 +93,7 @@
             http://developer.android.com/intl/ja/guide/topics/manifest/activity-element.html
          -->
         <activity
-            android:name="com.example.training.MainActivity"
+            android:name="com.example.training.MainActivityDay2_1_SimpleMine"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

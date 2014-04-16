@@ -47,7 +47,8 @@ public class MainActivityDay1_5_ButtonsWithEvents extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment implements OnClickListener {
+    public static class PlaceholderFragment extends Fragment implements
+            OnClickListener {
 
         public PlaceholderFragment() {
         }
@@ -55,22 +56,17 @@ public class MainActivityDay1_5_ButtonsWithEvents extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            //View rootView = inflater.inflate(R.layout.fragment_main, container,
-            //false);
-
-            View rootView = inflater.inflate(R.layout.mine_fragment_day1_4_better_88_buttons,
-                    container, false);
-            Button button0 = (Button) rootView.findViewById(R.id.button00);
-            button0.setOnClickListener(this);
+            View rootView = inflater.inflate(
+                    R.layout.mine_fragment_day1_4_better_88_buttons, container,
+                    false);
+            Button button00 = (Button) rootView.findViewById(R.id.button00);
+            button00.setOnClickListener(this);
 
             return rootView;
         }
 
         @Override
         public void onClick(View v) {
-            // デバッグログをデバッグ用の画面 (adb) に出力する。
-            // adb コマンドが必要
-            // 例: adb logcat *:F test:D
             Log.d("test", "Clicked!");
         }
     }

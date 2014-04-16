@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class MainActivityDay2_1_SimpleMineCompleted extends ActionBarActivity {
+public class MainActivityDay2_1_SimpleMine extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class MainActivityDay2_1_SimpleMineCompleted extends ActionBarActivity {
             initializeGameState();
             
             LinearLayout rootView = (LinearLayout)
-                    inflater.inflate(R.layout.mine_fragment_day2_0_start,
+                    inflater.inflate(R.layout.mine_fragment_day2,
                     container, false);
             for (int index = 0; index < rootView.getChildCount(); index++) {
                 View child = rootView.getChildAt(index);

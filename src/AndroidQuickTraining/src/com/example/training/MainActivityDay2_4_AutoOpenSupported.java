@@ -66,7 +66,7 @@ public class MainActivityDay2_4_AutoOpenSupported extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {            
             LinearLayout rootView = (LinearLayout)
-                    inflater.inflate(R.layout.mine_fragment_day2_0_start,
+                    inflater.inflate(R.layout.mine_fragment_day2,
                             container, false);
             for (int index = 0; index < rootView.getChildCount(); index++) {
                 View child = rootView.getChildAt(index);

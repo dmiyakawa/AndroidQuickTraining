@@ -3,16 +3,13 @@ package com.example.training;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-public class MainActivityDay2_0_Start extends ActionBarActivity {
+public class MainActivityDay1_4_ShowBetter88Buttons extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +44,7 @@ public class MainActivityDay2_0_Start extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment implements OnClickListener {
+    public static class PlaceholderFragment extends Fragment {
 
         public PlaceholderFragment() {
         }
@@ -55,16 +52,9 @@ public class MainActivityDay2_0_Start extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.mine_fragment_day2,
+            View rootView = inflater.inflate(R.layout.mine_fragment_day1_4_better_88_buttons,
                     container, false);
-            Button button0 = (Button) rootView.findViewById(R.id.button00);
-            button0.setOnClickListener(this);
             return rootView;
-        }
-
-        @Override
-        public void onClick(View v) {
-            Log.d("test", "Clicked!");
         }
     }
 

@@ -1,13 +1,77 @@
 = 二日目
-== Fragment を二日目開始時のものに変更し、動作させる
+== 二日目のレイアウトを用いる（@<code>{MainActivityDay2_0_Start.java}）
 
- * 今日使いやすいようにレイアウトを少し変えてあります
- * (meld 等でグラフィカルに差分を表示してみせる)
- * ツール類はこういう時便利です
+今日の進行上使いやすいように、一日目のものからレイアウトに若干の変更を加える。
 
-== 全てのボタンにイベントリスナーを設定する
 
- * 昨日は左上のボタンだけでした
+ * 8x8の盤面の上部に「ゆっくりしていってね！」と表示される@<code>{TextView}を設置する。
+  * クリア時のメッセージを表示するのに使う。
+ * 8x8の盤面の下部に「Retry」ボタンを設置する。
+   * 「リセット」を実装するのに使う。
+ * 8x8の盤面を「中央揃え」して、上端に大きめの隙間を設ける。
+  * 単純に見栄えの問題。
+
+=== 変更方法
+
+ * 手動で編集している場合、特にレイアウトファイルの内容を@<code>{mine_fragment_day2_0.xml}と同様にする。
+ * コピーするのが速いが、練習のため手動で行なっても可
+
+以下に@<code>{mine_fragment_day2_0.xml}の変更を含む場所を掲載する。
+
+//list[day0_start_layout][@<code>{mine_fragment_day2_0.xml}の一部]{
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:layout_marginTop="32dp"
+  android:gravity="center_horizontal"
+  android:orientation="vertical"
+  android:paddingBottom="@dimen/activity_vertical_margin"
+  android:paddingLeft="@dimen/activity_horizontal_margin"
+  android:paddingRight="@dimen/activity_horizontal_margin"
+  android:paddingTop="@dimen/activity_vertical_margin"
+  tools:context="jp.ascii.training2014.MainActivity$PlaceholderFragment" >
+
+  <TextView
+    android:id="@+id/textView1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="ゆっくりしていってね！"
+    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+... (mine_fragment_day1_4_better_88_buttons.xml同様8x8のボタンが並んでいる)
+
+  <Button
+    android:id="@+id/reset_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Retry" />
+</LinearLayout>
+//}
+
+なお、二日目において、レイアウトの変更は以降ない。
+基本的に@<code>{mine_fragment_day2_0.xml}を使い続ける。
+
+=== 参考: diffツールについて
+
+ * 特にテキストファイルのどの部分が異なるかを調べるツールを一般に「diffツール」（でぃふつーる）と呼ぶ
+ ** 最も一般的なコマンドラインツールが@<code>{diff}コマンドという名前であったため
+ ** 違いを「差分」と言う（参考: @<href>{http://goo.gl/tNztnx}（差分 - Wikipedia））
+ * 現在は図示するツールを使うのがより一般的（例: @<href>{http://meldmerge.org/}）
+
+//image[meld-example][差分ツールの一つ@<code>{Meld}を@<code>{mine_fragment_day2.xml}と@<code>{mine_fragment_day1_4_better_88_buttons.xml}の2ファイルに適用した例][]{
+//}
+
+=== 参考: @<code>{android:text}に警告が表示される
+
+ * 一日目の通りで、この方法は「正しくない」
+ * 例えばここから英語版を作る場合、どうするのか？
+ * @<code>{"@string"}をもちいるのが本来は正しい
+ ** 今回は省略している
+
+== 全てのボタンにイベントリスナーを設定する（@<code>{MainActivityDay2_1_SimpleMine.java})
+
+ * 左上のボタンだけでした
  * 全部のボタンにイベントを登録するには
   1. 一つ一つ丁寧にボタンにイベントリスナーを登録する
   1. 自動でやらせる
@@ -24,20 +88,18 @@
  **** オブジェクト指向における「オブジェクト == インスタンス」が特定のクラス派生のものであったら、という意味ですが
 
 //list[logd][イベントリスナ]{
-            LinearLayout rootView = (LinearLayout)
-                    inflater.inflate(R.layout.mine_fragment_4_day2_start,
-                    container, false);
-            for (int index = 0; index < rootView.getChildCount(); index++) {
-                View child = rootView.getChildAt(index);
-                Log.d("test", "child: " + child);
-                if (child instanceof LinearLayout) {
-                    LinearLayout childAsLinearLayout = (LinearLayout) child;
-                    for (int index2 = 0; index2 < childAsLinearLayout.getChildCount(); index2++) {
-                        View grandchild = childAsLinearLayout.getChildAt(index2);
-                        Log.d("test", "grandchild: " + grandchild);
-                    }
-                }
-            }
+LinearLayout rootView = (LinearLayout)inflater.inflate(R.layout.main_fragment, container, false);
+for (int index = 0; index < rootView.getChildCount(); index++) {
+  View child = rootView.getChildAt(index);
+  Log.d("test", "child: " + child);
+  if (child instanceof LinearLayout) {
+    LinearLayout childAsLinearLayout = (LinearLayout) child;
+    for (int index2 = 0; index2 < childAsLinearLayout.getChildCount(); index2++) {
+      View grandchild = childAsLinearLayout.getChildAt(index2);
+      Log.d("test", "grandchild: " + grandchild);
+    }
+  }
+}
 //}
 
 この結果として
@@ -119,27 +181,24 @@ D/test    ( 1106): grandchild: android.widget.Button{b3df0b18 VFED..C. ......I. 
 D/test    ( 1106): child: android.widget.Button{b3df1538 VFED..C. ......I. 0,0-0,0 #7f05007e app:id/button1}
 //}
 
-
- * わかりづらいですが…… @<code>{Button} が全部来ているのは間違いないようです！
+@<code>{Button}に関するイベントが全部登録できている。
 
 //list[button_clicked][hoge]{
-            LinearLayout rootView = (LinearLayout)
-                    inflater.inflate(R.layout.mine_fragment_4_day2_start,
-                    container, false);
-            for (int index = 0; index < rootView.getChildCount(); index++) {
-                View child = rootView.getChildAt(index);
-                Log.d("test", "child: " + child);
-                if (child instanceof LinearLayout) {
-                    LinearLayout childAsLinearLayout = (LinearLayout) child;
-                    for (int index2 = 0; index2 < childAsLinearLayout.getChildCount(); index2++) {
-                        View grandchild = childAsLinearLayout.getChildAt(index2);
-                        Log.d("test", "grandchild: " + grandchild);
-                        if (grandchild instanceof Button) {
-                            ((Button) grandchild).setOnClickListener(this);
-                        }
-                    }
-                }
-            }
+LinearLayout rootView = (LinearLayout)inflater.inflate(R.layout.main_fragment, container, false);
+for (int index = 0; index < rootView.getChildCount(); index++) {
+  View child = rootView.getChildAt(index);
+  Log.d("test", "child: " + child);
+  if (child instanceof LinearLayout) {
+    LinearLayout childAsLinearLayout = (LinearLayout) child;
+    for (int index2 = 0; index2 < childAsLinearLayout.getChildCount(); index2++) {
+      View grandchild = childAsLinearLayout.getChildAt(index2);
+      Log.d("test", "grandchild: " + grandchild);
+      if (grandchild instanceof Button) {
+          ((Button) grandchild).setOnClickListener(this);
+      }
+    }
+  }
+}
 //}
 
  * これでクリックしていることわ分かるんですが
@@ -147,7 +206,6 @@ D/test    ( 1106): child: android.widget.Button{b3df1538 VFED..C. ......I. 0,0-0
  * それがわからないと「爆弾を踏んだか」も分からない
  * かなしい。
  * というわけで、「座標」をログに表示させてみます
-
 
 //list[cordinate][座標を表示する]{
         @Override
