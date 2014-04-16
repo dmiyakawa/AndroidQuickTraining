@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,8 +12,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
-public class MainActivityDay2_0_Start extends ActionBarActivity {
+public class MainActivityDay2_2_HandlingAllEventsWithXY2 extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public class MainActivityDay2_0_Start extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -44,10 +47,20 @@ public class MainActivityDay2_0_Start extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private static class XY {
+        public int x;
+        public int y;
+        public XY(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment implements OnClickListener {
+        private SparseArray<XY> mButtonIdToXY = new SparseArray<XY>();
 
         public PlaceholderFragment() {
         }
@@ -55,16 +68,32 @@ public class MainActivityDay2_0_Start extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.mine_fragment_day2,
-                    container, false);
-            Button button00 = (Button) rootView.findViewById(R.id.button00);
-            button00.setOnClickListener(this);
+            LinearLayout rootView = (LinearLayout)
+                    inflater.inflate(R.layout.mine_fragment_day2, container, false);
+            for (int index=0, y=0; index < rootView.getChildCount(); index++) {
+                View child = rootView.getChildAt(index);
+                if (child instanceof LinearLayout) {
+                    LinearLayout childAsLinearLayout = (LinearLayout) child;
+                    for (int index2=0, x=0; index2 < childAsLinearLayout.getChildCount(); index2++) {
+                        View grandchild = childAsLinearLayout.getChildAt(index2);
+                        if (grandchild instanceof Button) {
+                            ((Button) grandchild).setOnClickListener(this);
+                            mButtonIdToXY.put(grandchild.getId(), new XY(x, y));
+                            x++;
+                        }
+                    }
+                    y++;
+                }
+            }
             return rootView;
         }
 
         @Override
         public void onClick(View v) {
-            Log.d("test", "Clicked!");
+            XY xy = mButtonIdToXY.get(v.getId());
+            if (xy != null) {
+                Log.d("test", "Clicked! x=" + xy.x + ", y=" + xy.y);
+            }
         }
     }
 

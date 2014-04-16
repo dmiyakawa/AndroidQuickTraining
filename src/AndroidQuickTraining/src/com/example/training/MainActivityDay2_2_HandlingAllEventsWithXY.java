@@ -11,8 +11,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
-public class MainActivityDay2_0_Start extends ActionBarActivity {
+public class MainActivityDay2_2_HandlingAllEventsWithXY extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class MainActivityDay2_0_Start extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -48,6 +50,7 @@ public class MainActivityDay2_0_Start extends ActionBarActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment implements OnClickListener {
+        private int[][] mButtonIds = new int[8][8];
 
         public PlaceholderFragment() {
         }
@@ -55,16 +58,45 @@ public class MainActivityDay2_0_Start extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.mine_fragment_day2,
-                    container, false);
-            Button button00 = (Button) rootView.findViewById(R.id.button00);
-            button00.setOnClickListener(this);
+            LinearLayout rootView = (LinearLayout)
+                    inflater.inflate(R.layout.mine_fragment_day2, container, false);
+            for (int index=0, y=0; index < rootView.getChildCount(); index++) {
+                View child = rootView.getChildAt(index);
+                if (child instanceof LinearLayout) {
+                    LinearLayout childAsLinearLayout = (LinearLayout) child;
+                    for (int index2=0, x=0; index2 < childAsLinearLayout.getChildCount(); index2++) {
+                        View grandchild = childAsLinearLayout.getChildAt(index2);
+                        if (grandchild instanceof Button) {
+                            ((Button) grandchild).setOnClickListener(this);
+                            mButtonIds[x][y] = grandchild.getId();
+                            x++;
+                        }
+                    }
+                    y++;
+                }
+            }
             return rootView;
         }
 
         @Override
         public void onClick(View v) {
-            Log.d("test", "Clicked!");
+            boolean found = false;
+            int view_x = -1;
+            int view_y = -1;
+            for (int x = 0; x < 8; x++) {
+                for (int y = 0; y < 8; y++) {
+                    if (mButtonIds[x][y] == v.getId()) {
+                        found = true;
+                        view_x = x;
+                        view_y = y;
+                        break;
+                    }
+                }
+                if (found) {
+                    break;
+                }
+            }
+            Log.d("test", "Clicked! x=" + view_x + ", y=" + view_y);
         }
     }
 

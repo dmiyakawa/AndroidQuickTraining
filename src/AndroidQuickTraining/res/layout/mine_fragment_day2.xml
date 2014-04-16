@@ -12,10 +12,10 @@
     tools:context="jp.ascii.training2014.MainActivity$PlaceholderFragment" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/top_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ゆっくりしていってね！"
+        android:text="@string/yukkuri"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <LinearLayout
@@ -574,6 +574,6 @@
         android:id="@+id/reset_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Retry" />
+        android:text="@string/retry" />
 
 </LinearLayout>

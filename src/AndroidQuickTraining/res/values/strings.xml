@@ -4,5 +4,8 @@
     <string name="app_name">AsciiTraining2014</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="yukkuri">ゆっくりしていってね！</string>
+    <string name="retry">Retry</string>
+    <string name="clear">クリアした!</string>
 
 </resources>

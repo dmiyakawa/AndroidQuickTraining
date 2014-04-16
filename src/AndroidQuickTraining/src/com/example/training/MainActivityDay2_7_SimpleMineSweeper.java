@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivityDay2 extends ActionBarActivity {
+public class MainActivityDay2_7_SimpleMineSweeper extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,8 @@ public class MainActivityDay2 extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -52,38 +54,36 @@ public class MainActivityDay2 extends ActionBarActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment implements OnClickListener {
-        private static final int NUM_BOMBS = 6;
+        private static final int NUM_BOMBS = 8;
 
         private int[][] mButtonIds = new int[8][8];
-        private int[][] mButtonStates = new int[8][8];
         private boolean[][] mIsBomb = new boolean[8][8];
         private int mNumBombs = NUM_BOMBS;
-
+        
         public PlaceholderFragment() {
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {            
+                Bundle savedInstanceState) {
             LinearLayout rootView = (LinearLayout)
-                    inflater.inflate(R.layout.mine_fragment_day2,
-                            container, false);
-            for (int index = 0; index < rootView.getChildCount(); index++) {
+                    inflater.inflate(R.layout.mine_fragment_day2, container, false);
+            for (int index=0, y=0; index < rootView.getChildCount(); index++) {
                 View child = rootView.getChildAt(index);
-                Log.d("test", "child: " + child);
                 if (child instanceof LinearLayout) {
                     LinearLayout childAsLinearLayout = (LinearLayout) child;
-                    for (int index2 = 0; index2 < childAsLinearLayout.getChildCount(); index2++) {
+                    for (int index2=0, x=0; index2 < childAsLinearLayout.getChildCount(); index2++) {
                         View grandchild = childAsLinearLayout.getChildAt(index2);
-                        Log.d("test", "grandchild: " + grandchild);
                         if (grandchild instanceof Button) {
                             ((Button) grandchild).setOnClickListener(this);
+                            mButtonIds[x][y] = grandchild.getId();
+                            x++;
                         }
                     }
+                    y++;
                 }
             }
             
-            // ゲームを初期化します。
             initializeGameState(rootView);
 
             Button resetButton = (Button) rootView.findViewById(R.id.reset_button);
@@ -139,7 +139,7 @@ public class MainActivityDay2 extends ActionBarActivity {
                 }
             }
             if (numOpenCell == mNumBombs) {
-                ((TextView) rootView.findViewById(R.id.textView1)).setText("クリアした！");
+                ((TextView) rootView.findViewById(R.id.top_message)).setText(R.string.clear);
                 for (int x = 0; x < 8; x++) {
                     for (int y = 0; y < 8; y++) {
                         ((Button)rootView.findViewById(mButtonIds[x][y])).setEnabled(false);
@@ -149,21 +149,18 @@ public class MainActivityDay2 extends ActionBarActivity {
         }
 
         private void handleButtonClick(int view_x, int view_y, View rootView, Button button) {
+            Log.d("test", "Clicked! x=" + view_x + ", y=" + view_y);
             if (mIsBomb[view_x][view_y]) {
-                // 残念、さやかちゃんでした！
-                Log.d("test", "KA-BOOM!! x=" + view_x + ", y=" + view_y);
                 button.setText("爆");
                 button.setTextColor(Color.RED);
 
-                // 全てのボタンを押せなくします。
+                // 全てのボタンを押せなくする
                 for (int x = 0; x < 8; x++) {
                     for (int y = 0; y < 8; y++) {
                         ((Button)rootView.findViewById(mButtonIds[x][y])).setEnabled(false);
                     }
                 }
             } else {
-                // 爆弾ではなかった
-                Log.d("test", "Clicked! x=" + view_x + ", y=" + view_y);
                 int numOfBombs = 0;
                 for (int y = view_y - 1; y <= view_y + 1; y++) {
                     if (y < 0 || y >= 8) {
@@ -178,13 +175,9 @@ public class MainActivityDay2 extends ActionBarActivity {
                         }
                     }
                 }
-
-                Log.d("test", "NumOfBombs for (" + view_x + ", " + view_y + "): " + numOfBombs);
                 button.setText(String.valueOf(numOfBombs));
                 
-                // もし爆弾と隣りあわせていなかったら？
                 if (numOfBombs == 0) {
-                    // 隣り合う他のマス目に対してクリックがあったのと同じトラップを発動！
                     for (int y = view_y - 1; y <= view_y + 1; y++) {
                         if (y < 0 || y >= 8) {
                             continue;
@@ -195,7 +188,6 @@ public class MainActivityDay2 extends ActionBarActivity {
                             }
                             Button neighborButton =
                                     (Button) rootView.findViewById(mButtonIds[x][y]);
-                            // ……でももう開いてる場合は無視ね
                             // 「開いている」 == 「文字が書き込まれている」 (今回はそうした)
                             if (TextUtils.isEmpty(neighborButton.getText())) {
                                 // このメソッドをさらに呼んでしまう (再帰)
@@ -207,41 +199,34 @@ public class MainActivityDay2 extends ActionBarActivity {
             }
         }
 
-        // 初期化する
         private void initializeGameState(View rootView) {
-            ((TextView) rootView.findViewById(R.id.textView1)).setText("二日目です");
+            // 「クリアした」を表示する一番上のTextViewをリセット
+            ((TextView) rootView.findViewById(R.id.top_message)).setText(R.string.yukkuri);
 
-            // ボタンに対応するidを覚えます
-            setupButtonIds();
-            
-            // ボタンの状態をリセットします
             for (int x = 0; x < 8; x++) {
                 for (int y = 0; y < 8; y++) {
-                    // ボタンに触れてない
-                    mButtonStates[x][y] = 0;
-                    
-                    // 書き込んだ文字を消します
+                    // 書き込んだ文字を消す
                     Button button = (Button)rootView.findViewById(mButtonIds[x][y]);
                     button.setText("");
                     button.setTextColor(Color.BLACK);
                     button.setEnabled(true);
                 }
             }
-            
-            setBombRandomly();
 
-            // デバッグするときはこちら
-            // setBombManually()
-        }
-
-        public void setBombRandomly() {
-            mNumBombs = NUM_BOMBS;
+            // 爆弾を配置する前に、まず全ての設置済みの爆弾を撤去する
             for (int x = 0; x < 8; x++) {
                 for (int y = 0; y < 8; y++) {
                     mIsBomb[x][y] = false;
                 }
             }
+            setBombRandomly();
+            // デバッグするときは代わりに以下を有効にする
+            // setBombManually()
+        }
 
+        public void setBombRandomly() {
+            // 自動で設定したボムの数はNUM_BOMBSと一致する
+            mNumBombs = NUM_BOMBS;
             Random random = new Random();
             for (int i = 0; i < NUM_BOMBS; i++) {
                 while(true) {
@@ -253,106 +238,16 @@ public class MainActivityDay2 extends ActionBarActivity {
                     }
                 }
             }
-        }
-
-        // 使っていません。Eclipseの警告を避けるためにわざとpublicを使っています。
-        public void setBombManually() {
-            // 手動で設定したボムの数はNUM_BOMBSと異なるので注意
-            mNumBombs = 4;
-
-            for (int x = 0; x < 8; x++) {
-                for (int y = 0; y < 8; y++) {
-                    mIsBomb[x][y] = false;
-                }
-            }
-
-            // 左上 (座標 0,0) に爆弾が一つ
-            mIsBomb[0][0] = true;
-            // 座標 3, 4 に爆弾が一つ = 左から「4」つめ、上から「5」つめ (いわゆる「0-origin」)
-            mIsBomb[3][4] = true;
-            mIsBomb[5][6] = true;
-            mIsBomb[6][2] = true;
             
         }
-        
-        private void setupButtonIds() {
-            // mButtonIds 配列に既存のレイアウトのidを入れていきます。
-            //
-            // 本格的な実装ではこういうことはあまりしません :-)
-            // より良い方法 (いくつもありますが、その中から)
-            // 1. View#generateViewId() を使う
-            // 2. setTag() と findViewWithTag() を使う
-            mButtonIds[0][0] = R.id.button00;
-            mButtonIds[0][1] = R.id.button01;
-            mButtonIds[0][2] = R.id.button02;
-            mButtonIds[0][3] = R.id.button03;
-            mButtonIds[0][4] = R.id.button04;
-            mButtonIds[0][5] = R.id.button05;
-            mButtonIds[0][6] = R.id.button06;
-            mButtonIds[0][7] = R.id.button07;
 
-            mButtonIds[1][0] = R.id.button10;
-            mButtonIds[1][1] = R.id.button11;
-            mButtonIds[1][2] = R.id.button12;
-            mButtonIds[1][3] = R.id.button13;
-            mButtonIds[1][4] = R.id.button14;
-            mButtonIds[1][5] = R.id.button15;
-            mButtonIds[1][6] = R.id.button16;
-            mButtonIds[1][7] = R.id.button17;
-
-            mButtonIds[2][0] = R.id.button20;
-            mButtonIds[2][1] = R.id.button21;
-            mButtonIds[2][2] = R.id.button22;
-            mButtonIds[2][3] = R.id.button23;
-            mButtonIds[2][4] = R.id.button24;
-            mButtonIds[2][5] = R.id.button25;
-            mButtonIds[2][6] = R.id.button26;
-            mButtonIds[2][7] = R.id.button27;
-
-            mButtonIds[3][0] = R.id.button30;
-            mButtonIds[3][1] = R.id.button31;
-            mButtonIds[3][2] = R.id.button32;
-            mButtonIds[3][3] = R.id.button33;
-            mButtonIds[3][4] = R.id.button34;
-            mButtonIds[3][5] = R.id.button35;
-            mButtonIds[3][6] = R.id.button36;
-            mButtonIds[3][7] = R.id.button37;
-
-            mButtonIds[4][0] = R.id.button40;
-            mButtonIds[4][1] = R.id.button41;
-            mButtonIds[4][2] = R.id.button42;
-            mButtonIds[4][3] = R.id.button43;
-            mButtonIds[4][4] = R.id.button44;
-            mButtonIds[4][5] = R.id.button45;
-            mButtonIds[4][6] = R.id.button46;
-            mButtonIds[4][7] = R.id.button47;
-
-            mButtonIds[5][0] = R.id.button50;
-            mButtonIds[5][1] = R.id.button51;
-            mButtonIds[5][2] = R.id.button52;
-            mButtonIds[5][3] = R.id.button53;
-            mButtonIds[5][4] = R.id.button54;
-            mButtonIds[5][5] = R.id.button55;
-            mButtonIds[5][6] = R.id.button56;
-            mButtonIds[5][7] = R.id.button57;
-
-            mButtonIds[6][0] = R.id.button60;
-            mButtonIds[6][1] = R.id.button61;
-            mButtonIds[6][2] = R.id.button62;
-            mButtonIds[6][3] = R.id.button63;
-            mButtonIds[6][4] = R.id.button64;
-            mButtonIds[6][5] = R.id.button65;
-            mButtonIds[6][6] = R.id.button66;
-            mButtonIds[6][7] = R.id.button67;
-
-            mButtonIds[7][0] = R.id.button70;
-            mButtonIds[7][1] = R.id.button71;
-            mButtonIds[7][2] = R.id.button72;
-            mButtonIds[7][3] = R.id.button73;
-            mButtonIds[7][4] = R.id.button74;
-            mButtonIds[7][5] = R.id.button75;
-            mButtonIds[7][6] = R.id.button76;
-            mButtonIds[7][7] = R.id.button77;
+        public void setBombManually() {
+            // 手動で設定したボムの数はNUM_BOMBSと異なる
+            mNumBombs = 4;
+            mIsBomb[0][0] = true;
+            mIsBomb[3][4] = true;
+            mIsBomb[5][6] = true;
+            mIsBomb[6][2] = true;            
         }
     }
 }
