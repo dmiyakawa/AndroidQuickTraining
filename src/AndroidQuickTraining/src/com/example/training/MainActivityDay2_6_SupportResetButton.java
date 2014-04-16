@@ -111,7 +111,7 @@ public class MainActivityDay2_6_SupportResetButton extends ActionBarActivity {
 
             Log.d("test", "Clicked! x=" + view_x + ", y=" + view_y);
             if (mIsBomb[view_x][view_y]) {
-                ((Button) v).setText("爆");
+                ((Button) v).setText(R.string.bomb);
                 ((Button) v).setTextColor(Color.RED);
 
                 // 全てのボタンを押せないようにする

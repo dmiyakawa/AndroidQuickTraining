@@ -7,5 +7,7 @@
     <string name="yukkuri">ゆっくりしていってね！</string>
     <string name="retry">Retry</string>
     <string name="clear">クリアした!</string>
+    <string name="bomb">爆</string>
+    <string name="open">開</string>
 
 </resources>

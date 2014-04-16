@@ -148,7 +148,7 @@ public class MainActivityDay2_9_SupportRandomMines extends ActionBarActivity {
         private void handleButtonClick(int view_x, int view_y, View rootView, Button button) {
             Log.d("test", "Clicked! x=" + view_x + ", y=" + view_y);
             if (mIsBomb[view_x][view_y]) {
-                button.setText("爆");
+                button.setText(R.string.bomb);
                 button.setTextColor(Color.RED);
 
                 // 全てのボタンを押せなくする
