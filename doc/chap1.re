@@ -448,7 +448,7 @@ Eclipse上での簡単な対策の一つは、キーボード上で@<code>{Ctrl-
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="jp.ascii.training2014.MainActivity$PlaceholderFragment" >
+    tools:context="com.example.training.MainActivity$PlaceholderFragment" >
 
     <Button
         android:layout_width="wrap_content"
